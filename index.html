@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Mettiti in lista</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f1f3f4;
+      color: #202124;
+    }
+
+    .container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 550px;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 40px 30px;
+      text-align: center;
+      box-shadow: 0 3px 15px rgba(0,0,0,.12);
+    }
+
+    .icon {
+      font-size: 45px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0 0 15px;
+      font-size: 28px;
+    }
+
+    p {
+      color: #5f6368;
+      line-height: 1.6;
+    }
+
+    .continue {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 13px 25px;
+      border-radius: 6px;
+      background: #1a73e8;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+
+    .continue:hover {
+      background: #1557b0;
+    }
+
+    .continue.disabled {
+      background: #9aa0a6;
+      pointer-events: none;
+    }
+
+    /* Banner cookie */
+
+    .cookie-banner {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      width: calc(100% - 30px);
+      max-width: 750px;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 5px 30px rgba(0,0,0,.25);
+      z-index: 1000;
+    }
+
+    .cookie-banner h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .cookie-banner p {
+      font-size: 14px;
+      margin: 0 0 18px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      padding: 11px 20px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .accept {
+      background: #1a73e8;
+      color: white;
+    }
+
+    .accept:hover {
+      background: #1557b0;
+    }
+
+    .reject {
+      background: #f1f3f4;
+      color: #202124;
+    }
+
+    .reject:hover {
+      background: #e8eaed;
+    }
+
+    @media (max-width: 600px) {
+
+      .card {
+        padding: 30px 20px;
+      }
+
+      .buttons {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+
+    }
+  </style>
+
+</head>
+
+
+<body>
+
+  <div class="container">
+
+    <div class="card">
+
+      <div class="icon">✓</div>
+
+      <h1>Mettiti in lista</h1>
+
+      <p>
+        A seguito dell’elevata richiesta di partecipazione
+        all’evento, ti invitiamo a compilare il modulo
+        indicando nome e cognome, così da poter essere
+        inserito/a nella lista.
+      </p>
+
+      <p>
+        La compilazione richiede solo pochi secondi.
+      </p>
+
+      <a
+        id="formLink"
+        class="continue disabled"
+        href="#"
+      >
+        Continua
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <!-- BANNER COOKIE -->
+
+  <div id="cookieBanner" class="cookie-banner">
+
+    <h2>🍪 Cookie e privacy</h2>
+
+    <p>
+      Questa pagina può utilizzare cookie e tecnologie
+      simili per il corretto funzionamento del sito e per
+      ricordare le preferenze dell'utente.
+    </p>
+
+    <div class="buttons">
+
+      <button
+        id="accept"
+        class="accept"
+      >
+        Accetta
+      </button>
+
+      <button
+        id="reject"
+        class="reject"
+      >
+        Rifiuta
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    /* IL TUO GOOGLE MODULO */
+
+    const GOOGLE_FORM =
+      "https://docs.google.com/forms/d/e/1FAIpQLSestMmmSwHxmCqo6XeH9nmSZvEWS8coSS3ThT0r0ZoVwLz1lQ/viewform?usp=dialog";
+
+
+    const banner =
+      document.getElementById("cookieBanner");
+
+    const accept =
+      document.getElementById("accept");
+
+    const reject =
+      document.getElementById("reject");
+
+    const formLink =
+      document.getElementById("formLink");
+
+
+    /* Abilita il modulo */
+
+    function enableForm() {
+
+      formLink.href = GOOGLE_FORM;
+
+      formLink.classList.remove("disabled");
+
+      banner.style.display = "none";
+
+    }
+
+
+    /* Controlla il consenso già salvato */
+
+    if (
+      localStorage.getItem("cookieConsent")
+      === "accepted"
+    ) {
+
+      enableForm();
+
+    }
+
+
+    /* ACCETTA */
+
+    accept.addEventListener(
+      "click",
+      function() {
+
+        localStorage.setItem(
+          "cookieConsent",
+          "accepted"
+        );
+
+        enableForm();
+
+      }
+    );
+
+
+    /* RIFIUTA */
+
+    reject.addEventListener(
+      "click",
+      function() {
+
+        alert(
+          "Per continuare è necessario accettare."
+        );
+
+      }
+    );
+
+  </script>
+
+</body>
+
+</html>
